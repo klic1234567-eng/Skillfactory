@@ -1,0 +1,100 @@
+def view_table(table):
+    """Отрисовка таблицы 3х3 с разлиновкой"""
+    print("  0   1   2")
+    for i, line in enumerate(table):
+        print(f"{i} {line[0]} | {line[1]} | {line[2]}")
+        if i <2:
+            print(" ———|———|———")
+
+def player_move(table, player, line, stlb):
+    """Ходы игроков с проверкой на заполненость"""
+    if table[line][stlb] == ' ':
+        table[line][stlb] = player
+        return True
+    return False
+
+def check_win(table, player):
+    """Проверка при каждом ходе кто выиграл(Х или 0)"""
+    # Проверка строк(line)
+    for line in table:
+        if all(cell == player for cell in line):
+            return True
+
+    # Проверка столбцов(stlb)
+    for stlb in range(3):
+        if all(table[line][stlb] == player for line in range(3)):
+            return True
+
+    # Проверка диагонали
+    if all(table[i][i] == player for i in range(3)):
+        return True
+    if all(table[i][2-i] == player for i in range(3)):
+        return True
+    return False
+
+def check_ravno(table):
+    """Проверка на ничью, когда ходы закончились"""
+    return all(i != ' ' for line in table for i in line)
+
+def get_player_move(table, player):
+    """Начало  и запрос хода от игрока Х"""
+    while True:
+        try:
+            move = input(f"Игрок {player}, введите координаты\n(по горизонтали от 0-2 по вертикали от 0-2, вводить через пробел!): ")
+            line, stlb = map(int, move.split())
+
+            if 0 <= line <= 2 and 0 <= stlb <= 2:
+                if table[line][stlb] == ' ':
+                    return line, stlb
+                else:
+                    print("Клетка уже занята!")
+            else:
+                print("Координаты должны быть от 0 до 2!")
+        except ValueError:
+            print("Вы забыли пробел!")
+
+def begin_game():
+    """Основная  игра и логика запуска всех функций с проверками
+    Ход игрока и провери ничьи и победы"""
+    # Завдои таблицу
+    table = [
+    [' ', ' ', ' '],  #  0 стобец
+    [' ', ' ', ' '],  #  1 стобец
+    [' ', ' ', ' ']   #  2 стобец
+    ]
+    actual_player = 'X'
+    gameover = False
+
+    print("The Крестики-Нолики!")
+
+    while not gameover:
+        view_table(table)
+
+        # Ход игрока
+        line, stlb = get_player_move(table, actual_player)
+        table[line][stlb] = actual_player
+
+        # Проверка на победу
+        if check_win(table, actual_player):
+            view_table(table)
+            print(f"Ура! Игрок {actual_player} победил, второму игроку позор!")
+            gameover = True
+        # Проверяем на ничью
+        elif check_ravno(table):
+            view_table(table)
+            print("Выиграли оба, шутка - никто!")
+            gameover = True
+        else:
+            # Меняем игрока
+            actual_player = 'O' if actual_player == 'X' else 'X'
+
+    # Предложение сыграть снова
+    play_again = input("Может еще раз? (Да/нет): ").lower()
+    if play_again in ['Да', 'yes', 'y', 'д','да']:
+        begin_game()
+    else:
+        print("Game over!")
+
+# Запуск
+if __name__ == "__main__":
+    begin_game()
