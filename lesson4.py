@@ -155,7 +155,7 @@ print(Triangle(a = 3, b = 10, c = 16).get_triangle_area())
 # 0
 
 """
-
+"""
 class Queue:
     def __init__(self):
         self.items=[]
@@ -179,7 +179,6 @@ class Queue:
         for element in self.items:
             ret += str(element) + ' '
         print(ret)
-        return ret
 
 
 
@@ -204,3 +203,60 @@ q.dequeue()
 q.show_queue()
 
 # 3
+
+"""
+"""
+
+class User:
+    def __init__(self,email,password,balance):
+        self.email=email
+        self.password=password
+        self.balance=balance
+    def login(self,email,password):
+        if self.email == email and self.password == password:
+            return True
+        else:
+            return False
+    def update_balance(self,amount:int):
+        if int(amount):
+            self.balance += amount
+
+user = User("gosha@roskino.org", "qwerty", 20_000)
+print(user.login("gosha@roskino.org", "qwerty123"))
+# False
+print(user.login("gosha@roskino.org", "qwerty"))
+# True
+user.update_balance(200)
+user.update_balance(-500)
+print(user.balance)
+# 19700
+"""
+
+
+class IntDataFrame:
+    def __init__(self,lists):
+        true_list = []
+        for element in lists:
+            if element >=0:
+               true_list.append(int(element))
+        self.column = true_list
+    def count(self):
+        count = 0
+        for i in self.column:
+            if i>0:
+                count+=1
+        return count
+
+    def unique(self):
+        return len(set(self.column))
+
+df = IntDataFrame([4.7, 4, 3, 0, 2.4, 0.3, 4])
+
+print(df.column)
+# [4, 4, 3, 0, 2, 0, 4]
+
+print(df.count())
+# 5
+
+print(df.unique())
+# 4
