@@ -1,3 +1,4 @@
+#Credit Calculator
 import streamlit as st
 import pandas as pd
 import datetime
@@ -18,7 +19,7 @@ def validate_inputs(amount, rate, term, payment_type, start_date=None):
         errors.append("Сумма кредита должна быть положительным числом.")
     if rate <= 0 or rate > 100:
         errors.append("Процентная ставка должна быть в диапазоне (0, 100].")
-    if term <= 0 or term > 600:  # Максимальный срок 50 лет (600 месяцев)
+    if term <= 0 or term > 600:  #  до 600 месяцев
         errors.append("Срок кредита должен быть в диапазоне от 1 до 600 месяцев.")
     if payment_type not in ["Аннуитетный", "Дифференциальный"]:
         errors.append("Выберите корректный тип платежа.")
